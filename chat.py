@@ -12,16 +12,18 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen(1)
 
-print("Waiting for a secure connection...")
+#print("Waiting for a secure connection...")
 
 conn, addr = server.accept()
-print(f"Connected to {addr}")
+#print(f"Connected to {addr}")
 
 while True:
     data = conn.recv(1024)
     if not data:
         break
     decrypted_msg = xor_encrypt_decrypt(data, SECRET_KEY).decode()
-    print("Stealth Message:", decrypted_msg)
+    if decrypted_msg == "close":
+        break
+    print(decrypted_msg)
 
 conn.close()
